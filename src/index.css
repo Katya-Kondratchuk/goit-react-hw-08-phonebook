@@ -9,7 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-image: url('../assets/snowflakes.png');
   color: blue;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 code {
