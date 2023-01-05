@@ -5,10 +5,14 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import { FormStyled } from './ContactForm.styled';
 import { ButtonStyled } from 'components/App.styled';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contacts/contacts';
 
-function ContactForm({ onSubmitForm, isDublicate }) {
+function ContactForm({ isDublicate }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
 
   const nameId = nanoid();
   const numberId = nanoid();
@@ -17,7 +21,7 @@ function ContactForm({ onSubmitForm, isDublicate }) {
     event.preventDefault();
     isDublicate(name)
       ? Notify.warning(`${name} is already in contacts`)
-      : onSubmitForm({ name, number });
+      : dispatch(addContact({ name, number }));
     reset();
   };
 

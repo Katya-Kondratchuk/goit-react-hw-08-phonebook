@@ -1,39 +1,19 @@
 import React from 'react';
-import { nanoid } from 'nanoid';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import { ContactForm, ContactList, Filter } from 'components';
-import initialData from '../data/data.json';
 
 import { Wrapper } from './App.styled';
 import { ErrorMessage } from './ContactForm/ContactForm.styled';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 export function App() {
-  const [contacts, setContacts] = useState(
-    JSON.parse(localStorage.getItem('contacts')) ?? initialData
-  );
-  const [filter, setFilter] = useState('');
+  const contacts = useSelector(state => state.contacts.contacts);
+  const filter = useSelector(state => state.contacts.filter);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
-
-  const handlerAddContact = data => {
-    const contact = {
-      id: nanoid(),
-      ...data,
-    };
-    setContacts([...contacts, contact]);
-  };
-
-  const handleDeleteContact = id => {
-    setContacts(contacts.filter(contact => contact.id !== id));
-  };
-
-  const handleFilterContacts = event => {
-    setFilter(event.target.value.trim());
-  };
 
   const checkDuplitatesName = value =>
     contacts.some(({ name }) => name.toLowerCase() === value.toLowerCase());
@@ -44,17 +24,11 @@ export function App() {
   return (
     <Wrapper>
       <h1>Phonebook</h1>
-      <ContactForm
-        onSubmitForm={handlerAddContact}
-        isDublicate={checkDuplitatesName}
-      />
+      <ContactForm isDublicate={checkDuplitatesName} />
       <h2>Contacts</h2>
-      <Filter filter={filter} handleFilterContacts={handleFilterContacts} />
+      <Filter filter={filter} />
       {contacts.length ? (
-        <ContactList
-          contacts={visibleContacts}
-          handleDeleteContact={handleDeleteContact}
-        ></ContactList>
+        <ContactList contacts={visibleContacts}></ContactList>
       ) : (
         <ErrorMessage>You don't have contacts</ErrorMessage>
       )}

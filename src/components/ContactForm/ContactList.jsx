@@ -1,20 +1,28 @@
 import { ButtonStyled } from 'components/App.styled';
+import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { removeContact } from 'redux/contacts/contacts';
 import {
   ContactListStyled,
   ContactsItem,
   ErrorMessage,
 } from './ContactForm.styled';
 
-const ContactList = ({ contacts, handleDeleteContact }) => {
+const ContactList = ({ contacts }) => {
+  const dispatch = useDispatch();
+
   return (
     <ContactListStyled>
       {contacts.length ? (
         contacts.map(({ id, name, number }) => (
-          <ContactsItem key={id}>
+          <ContactsItem key={nanoid()}>
             <span>{name}:</span>
             <span>{number}</span>
-            <ButtonStyled type="button" onClick={() => handleDeleteContact(id)}>
+            <ButtonStyled
+              type="button"
+              onClick={() => dispatch(removeContact(id))}
+            >
               Delete
             </ButtonStyled>
           </ContactsItem>
