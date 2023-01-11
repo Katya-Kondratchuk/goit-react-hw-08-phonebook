@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { addContactOperation } from 'redux/contacts/operations';
 
 import { FormStyled } from './ContactForm.styled';
 import { ButtonStyled } from 'components/App.styled';
+import { selectIsLoading } from 'redux/selectors';
 
 function ContactForm({ isDublicate }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
+  const isLoading = useSelector(selectIsLoading);
   const dispatch = useDispatch();
 
   const nameId = nanoid();
@@ -60,7 +61,7 @@ function ContactForm({ isDublicate }) {
         />
       </label>
 
-      <ButtonStyled type="submit">
+      <ButtonStyled type="submit" disabled={isLoading}>
         <span>Add contact</span>
       </ButtonStyled>
     </FormStyled>

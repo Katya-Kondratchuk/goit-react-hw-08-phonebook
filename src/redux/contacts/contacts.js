@@ -10,6 +10,8 @@ const { createSlice } = require('@reduxjs/toolkit');
 const initialState = {
   contacts: [],
   filter: '',
+  isLoading: false,
+  error: null,
 };
 
 const contacts = createSlice({
@@ -21,8 +23,20 @@ const contacts = createSlice({
     },
   },
   extraReducers: {
+    [getContactsOperation.pending](state) {
+      state.isLoading = true;
+    },
     [getContactsOperation.fulfilled](state, { payload }) {
+      state.isLoading = false;
       state.contacts = payload;
+    },
+    [getContactsOperation.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [addContactOperation.pending](state) {
+      state.isLoading = true;
     },
     [addContactOperation.fulfilled](state, { payload }) {
       if (
@@ -37,10 +51,22 @@ const contacts = createSlice({
         state.contacts.unshift(payload);
       }
     },
+    [addContactOperation.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+
+    [deleteContactOperation.pending](state) {
+      state.isLoading = true;
+    },
     [deleteContactOperation.fulfilled](state, { payload }) {
       state.contacts = state.contacts.filter(
         contact => contact.id !== payload.id
       );
+    },
+    [deleteContactOperation.rejected](state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
 });
