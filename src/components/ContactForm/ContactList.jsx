@@ -1,9 +1,9 @@
 import { ButtonStyled } from 'components/App.styled';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteContactOperation } from 'redux/contacts/operations';
-import { selectIsLoading } from 'redux/selectors';
+
 
 import {
   ContactListStyled,
@@ -13,7 +13,6 @@ import {
 
 const ContactList = ({ contacts }) => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
 
   return (
     <ContactListStyled>
@@ -24,7 +23,6 @@ const ContactList = ({ contacts }) => {
             <span>{number}</span>
             <ButtonStyled
               type="button"
-              disabled={isLoading}
               onClick={() => dispatch(deleteContactOperation(id))}
             >
               Delete
