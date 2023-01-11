@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
 
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { addContactOperation } from 'redux/contacts/operations';
 
 import { FormStyled } from './ContactForm.styled';
 import { ButtonStyled } from 'components/App.styled';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/contacts/contacts';
 
-function ContactForm({ isDublicate }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -19,19 +18,8 @@ function ContactForm({ isDublicate }) {
 
   const handleSubmit = event => {
     event.preventDefault();
-    isDublicate(name)
-      ? Notify.warning(`${name} is already in contacts`)
-      : dispatch(addContact({ name, number }));
+    dispatch(addContactOperation({ name, number }));
     reset();
-  };
-
-  const handleChange = evt => {
-    const { name, value } = evt.target;
-    if (name === 'name') {
-      setName(value);
-    } else {
-      setNumber(value);
-    }
   };
 
   const reset = () => {
@@ -52,7 +40,7 @@ function ContactForm({ isDublicate }) {
           required
           placeholder="Enter name"
           value={name}
-          onChange={handleChange}
+          onChange={event => setName(event.target.value)}
         />
       </label>
       <label htmlFor={numberId}>
@@ -66,11 +54,11 @@ function ContactForm({ isDublicate }) {
           required
           placeholder="Enter number"
           value={number}
-          onChange={handleChange}
+          onChange={event => setNumber(event.target.value)}
         />
       </label>
 
-      <ButtonStyled type="submit" disabled={!name && !number}>
+      <ButtonStyled type="submit">
         <span>Add contact</span>
       </ButtonStyled>
     </FormStyled>

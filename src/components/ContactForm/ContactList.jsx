@@ -2,7 +2,8 @@ import { ButtonStyled } from 'components/App.styled';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { removeContact } from 'redux/contacts/contacts';
+import { deleteContactOperation } from 'redux/contacts/operations';
+
 import {
   ContactListStyled,
   ContactsItem,
@@ -21,7 +22,7 @@ const ContactList = ({ contacts }) => {
             <span>{number}</span>
             <ButtonStyled
               type="button"
-              onClick={() => dispatch(removeContact(id))}
+              onClick={() => dispatch(deleteContactOperation(id))}
             >
               Delete
             </ButtonStyled>
