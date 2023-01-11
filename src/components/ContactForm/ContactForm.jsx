@@ -7,7 +7,7 @@ import { addContactOperation } from 'redux/contacts/operations';
 import { FormStyled } from './ContactForm.styled';
 import { ButtonStyled } from 'components/App.styled';
 
-function ContactForm() {
+function ContactForm({ isDublicate }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -18,7 +18,9 @@ function ContactForm() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addContactOperation({ name, number }));
+    isDublicate(name)
+      ? alert('This name already exist')
+      : dispatch(addContactOperation({ name, number }));
     reset();
   };
 

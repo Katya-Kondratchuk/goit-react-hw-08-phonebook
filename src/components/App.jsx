@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ContactForm, ContactList, Filter } from 'components';
 
@@ -11,10 +11,15 @@ import { getContactsOperation } from 'redux/contacts/operations';
 export function App() {
   const contacts = useSelector(state => state.contacts.contacts);
   const filter = useSelector(state => state.contacts.filter);
-  
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getContactsOperation();
-  }, []);
+    dispatch(getContactsOperation());
+  }, [dispatch]);
+
+  const isDublicate = value => {
+    contacts.some(item => item.name.toLowerCase() === value.toLowerCase());
+  };
 
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
@@ -22,9 +27,9 @@ export function App() {
   return (
     <Wrapper>
       <h1>Phonebook</h1>
-      <ContactForm />
+      <ContactForm isDublicate={isDublicate} />
       <h2>Contacts</h2>
-      <Filter filter={filter} />
+      <Filter />
       {contacts.length ? (
         <ContactList contacts={visibleContacts}></ContactList>
       ) : (

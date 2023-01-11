@@ -3,5 +3,4 @@ import { contactsReducer } from './contacts/contacts';
 
 export default combineReducers({
   contacts: contactsReducer,
-  filter: null,
 });

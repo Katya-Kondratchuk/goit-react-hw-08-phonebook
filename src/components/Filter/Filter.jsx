@@ -1,17 +1,20 @@
-import { FilterStyled } from './Filter.styled';
 import PropTypes from 'prop-types';
-// import { filterContact } from 'redux/contacts/contacts';
-// import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const Filter = ({ filter }) => {
-  // const dispatch = useDispatch();
+import { filterContact } from 'redux/contacts/contacts';
+
+import { FilterStyled } from './Filter.styled';
+
+const Filter = () => {
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.contacts.filter);
 
   return (
     <FilterStyled>
       <span>Find contacts by name</span>
       <input
         type="text"
-        // onChange={e => dispatch(filterContact(e.currentTarget.value))}
+        onChange={e => dispatch(filterContact(e.currentTarget.value))}
         value={filter}
       />
     </FilterStyled>

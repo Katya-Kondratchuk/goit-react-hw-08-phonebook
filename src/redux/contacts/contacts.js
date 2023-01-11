@@ -12,32 +12,17 @@ const initialState = {
   filter: '',
 };
 
-// const addItemToContacts = (state, action) => {
-//   state.contacts.push(action.payload);
-// };
-
-// const removeItemFromContacts = (state, action) => {
-//   const newArray = state.contacts.filter(
-//     contact => contact.id !== action.payload
-//   );
-//   state.contacts = newArray;
-// };
-
 const contacts = createSlice({
   name: 'contacts',
   initialState,
-  // reducers: {
-  //   addContact: addItemToContacts,
-  //   removeContact: removeItemFromContacts,
-  //   filterContact: (state, action) => {
-  //     state.filter = action.payload;
-  //   },
-  // },
+  reducers: {
+    filterContact: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
   extraReducers: {
     [getContactsOperation.fulfilled](state, { payload }) {
-      state.contacts = payload.map(contact => {
-        return { ...state.contacts, ...contact };
-      });
+      state.contacts = payload;
     },
     [addContactOperation.fulfilled](state, { payload }) {
       if (
@@ -57,10 +42,8 @@ const contacts = createSlice({
         contact => contact.id !== payload.id
       );
     },
-    // [filterContactOperation.fulfilled](state, { payload }) {
-    //    state.filter = payload;
-    // },
   },
 });
 
 export const contactsReducer = contacts.reducer;
+export const { filterContact } = contacts.actions;
