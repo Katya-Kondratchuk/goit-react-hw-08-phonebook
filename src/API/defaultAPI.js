@@ -1,19 +1,21 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_URL;
-const token = JSON.parse(localStorage.getItem('persist:auth'));
+// const BASE_URL = process.env.REACT_APP_URL;
+// const token = JSON.parse(localStorage.getItem('persist:auth'));
 
-const axiosDB = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${JSON.parse(token.token)}`,
-  },
-});
+// const axiosDB = axios.create({
+//   baseURL: BASE_URL,
+//   headers: {
+//     'Content-Type': 'application/json',
+//     Authorization: `Bearer ${JSON.parse(token.token)}`,
+//   },
+// });
+
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 export const getContacts = () => {
   try {
-    return axiosDB.get('/contacts');
+    return axios.get('/contacts');
   } catch (error) {
     return {
       error,
@@ -23,7 +25,7 @@ export const getContacts = () => {
 
 export const postContact = data => {
   try {
-    return axiosDB.post('/contacts', JSON.stringify(data));
+    return axios.post('/contacts', JSON.stringify(data));
   } catch (error) {
     return {
       error,
@@ -33,7 +35,7 @@ export const postContact = data => {
 
 export const deleteContact = id => {
   try {
-    return axiosDB.delete(`/contacts/${id}`);
+    return axios.delete(`/contacts/${id}`);
   } catch (error) {
     return {
       error,
