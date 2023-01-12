@@ -24,15 +24,19 @@ export const RegisterForm = () => {
     <form className={css.form} onSubmit={handleSubmit} autoComplete="off">
       <label className={css.label}>
         Username
-        <input type="text" name="name" />
+        <input type="text" name="name" placeholder="Name" />
       </label>
       <label className={css.label}>
         Email
-        <input type="email" name="email" />
+        <input type="email" name="email" placeholder="Name@mail.com" />
       </label>
       <label className={css.label}>
         Password
-        <input type="password" name="password" />
+        <input
+          type="password"
+          name="password"
+          placeholder="Minimum 7 symbols"
+        />
       </label>
       <Button type="submit" variant="contained" startIcon={<ExitToAppIcon />}>
         Register
