@@ -1,9 +1,3 @@
-// import rootReducer from './rootReducer';
-// import { configureStore } from '@reduxjs/toolkit';
-
-// const store = configureStore({ reducer: rootReducer });
-// export default store;
-
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {
   persistStore,
@@ -45,7 +39,6 @@ export const store = configureStore({
     contacts: persistReducer(contactsPersistConfig, contactsReducer),
   },
   middleware,
-  //   devTools: process.env.NODE_ENV === 'development',
 });
 
 export const persistor = persistStore(store);
