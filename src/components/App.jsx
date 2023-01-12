@@ -1,43 +1,59 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAuth } from './../hook/useAuth';
+import React, { lazy, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
-import { ContactForm, ContactList, Filter } from 'components';
-import { selectContacts, selectFilter } from 'redux/selectors';
-import { getContactsOperation } from 'redux/contacts/operations';
+import { Route, Routes } from 'react-router-dom';
+import { refreshUser } from 'redux/auth/operations';
+import { Layout } from './Layout';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import { Contacts } from './pages/Contacts';
 
-import { Wrapper } from './App.styled';
-import { ErrorMessage } from './ContactForm/ContactForm.styled';
+const HomePage = lazy(() => import('./pages/Home'));
+const RegisterPage = lazy(() => import('./pages/Register'));
+const LoginPage = lazy(() => import('./pages/Login'));
 
 export function App() {
-  const contacts = useSelector(selectContacts);
-  const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
-    dispatch(getContactsOperation());
+    dispatch(refreshUser());
   }, [dispatch]);
 
-  const isDublicate = value => {
-    return contacts.some(
-      item => item.name.toLowerCase() === value.toLowerCase()
-    );
-  };
-
-  const visibleContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLocaleLowerCase())
-  );
-  return (
-    <Wrapper>
-      <h1>Phonebook</h1>
-      <ContactForm isDublicate={isDublicate} />
-      <h2>Contacts</h2>
-      <Filter />
-      {contacts.length ? (
-        <ContactList contacts={visibleContacts}></ContactList>
-      ) : (
-        <ErrorMessage>You don't have contacts</ErrorMessage>
-      )}
-    </Wrapper>
+  return isRefreshing ? (
+    <b>Refreshing user...</b>
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute
+              restricted
+              redirectTo="/contacts"
+              component={<RegisterPage />}
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute
+              restricted
+              redirectTo="/contacts"
+              component={<LoginPage />}
+            />
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<Contacts />} />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }

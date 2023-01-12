@@ -6,6 +6,7 @@ import { addContactOperation } from 'redux/contacts/operations';
 
 import { FormStyled } from './ContactForm.styled';
 import { ButtonStyled } from 'components/App.styled';
+import { Notify } from 'notiflix';
 
 function ContactForm({ isDublicate }) {
   const [name, setName] = useState('');
@@ -18,7 +19,7 @@ function ContactForm({ isDublicate }) {
   const handleSubmit = event => {
     event.preventDefault();
     isDublicate(name)
-      ? alert('This name already exist')
+      ? Notify.warning(`${name} already exists in phonebook`)
       : dispatch(addContactOperation({ name, number }));
     reset();
   };
