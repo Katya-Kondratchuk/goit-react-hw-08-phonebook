@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkreact_homework_template=self.webpackChunkreact_homework_template||[]).push([[593],{4593:function(e,t,n){n.r(t),n.d(t,{default:function(){return c}});var i=n(184),r={container:{minHeight:"calc(34vh - 50px)",display:"flex",alignItems:"center",justifyContent:"center"},title:{fontWeight:700,fontSize:48,textAlign:"center",width:"600px"}};function c(){return(0,i.jsx)("div",{style:r.container,children:(0,i.jsx)("h1",{style:r.title,children:"Please register or login to view the contact book"})})}}}]);
+//# sourceMappingURL=593.5205a9d1.chunk.js.map
